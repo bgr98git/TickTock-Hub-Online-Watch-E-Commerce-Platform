@@ -1,0 +1,353 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
+public partial class admin_Default : System.Web.UI.Page
+{
+    SqlConnection cn;
+    DataSet ds;
+    string qry;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        cn = new SqlConnection(ConfigurationManager.ConnectionStrings["con"].ConnectionString);
+
+
+    }
+
+    //protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    //{
+    //    //int pid = Convert.ToInt16(GridView1.DataKeys[e.RowIndex].Values["Pid"].ToString());
+    //    //TextBox pnm = GridView1.Rows[e.RowIndex].FindControl("TextBox1") as TextBox;
+    //    //DropDownList brandlist = GridView1.Rows[e.RowIndex].FindControl("DropDownList1") as DropDownList;
+    //    //RadioButtonList genlist= GridView1.Rows[e.RowIndex].FindControl("rblGender") as RadioButtonList;
+
+    //    //TextBox price = GridView1.Rows[e.RowIndex].FindControl("TextBox4") as TextBox;
+    //    //decimal prc = Convert.ToDecimal(price.Text);
+    //    //FileUpload Front = GridView1.Rows[e.RowIndex].FindControl("FileUpload1") as FileUpload;
+    //    //FileUpload Back = GridView1.Rows[e.RowIndex].FindControl("FileUpload2") as FileUpload;
+
+    //    //HiddenField hiddenField1 = GridView1.Rows[e.RowIndex].FindControl("HiddenField1") as HiddenField;
+    //    //HiddenField hiddenField2 = GridView1.Rows[e.RowIndex].FindControl("HiddenField2") as HiddenField;
+
+
+    //    //SqlCommand cmd;
+    //    //if (Front.HasFile && Back.HasFile)
+    //    //{
+    //    //    cmd = new SqlCommand("UPDATE products SET P_name=@name, Brand_name=@brand, Gender=@gender, Price=@price, Front_img=@frontImg, Back_img=@backImg WHERE Pid=@id", cn);
+    //    //    cmd.Parameters.AddWithValue("@name", pnm.Text);
+    //    //    cmd.Parameters.AddWithValue("@brand", brandlist.SelectedValue); // Assuming the DropDownList value represents the brand
+    //    //    cmd.Parameters.AddWithValue("@gender", genlist.SelectedValue);
+    //    //    cmd.Parameters.AddWithValue("@price", prc);
+    //    //    cmd.Parameters.AddWithValue("@frontImg", Front.FileName);
+    //    //    cmd.Parameters.AddWithValue("@backImg", Back.FileName);
+    //    //    cmd.Parameters.AddWithValue("@id", pid);
+    //    //    Front.SaveAs(Server.MapPath("assets\\upload") + "\\" + Front.FileName);
+    //    //    Back.SaveAs(Server.MapPath("assets\\upload") + "\\" + Back.FileName);
+    //    //    cn.Open();
+    //    //    cmd.ExecuteNonQuery();
+    //    //    cn.Close();
+
+    //    //    // Rebind the GridView
+    //    //    GridView1.EditIndex = -1; // Reset edit index
+    //    //    GridView1.DataBind();
+    //    //}
+    //    //else
+    //    //{
+    //    //    cmd = new SqlCommand("UPDATE products SET P_name=@name, Brand_name=@brand, Gender=@gender, Price=@price WHERE Pid=@id", cn);
+    //    //    cmd.Parameters.AddWithValue("@name", pnm.Text);
+    //    //    cmd.Parameters.AddWithValue("@brand", brandlist.SelectedValue); // Assuming the DropDownList value represents the brand
+    //    //    cmd.Parameters.AddWithValue("@gender", genlist.SelectedValue);
+    //    //    cmd.Parameters.AddWithValue("@price", prc);
+
+    //    //    cmd.Parameters.AddWithValue("@id", pid);
+
+    //    //    cn.Open();
+    //    //    cmd.ExecuteNonQuery();
+    //    //    cn.Close();
+
+    //    //    // Rebind the GridView
+    //    //    GridView1.EditIndex = -1; // Reset edit index
+    //    //    GridView1.DataBind();
+    //    //}
+
+    //    // int pid = Convert.ToInt16(GridView1.DataKeys[e.RowIndex].Values["Pid"].ToString());
+    //    // TextBox pnm = GridView1.Rows[e.RowIndex].FindControl("TextBox1") as TextBox;
+    //    // DropDownList brandlist = GridView1.Rows[e.RowIndex].FindControl("DropDownList1") as DropDownList;
+    //    // RadioButtonList genlist = GridView1.Rows[e.RowIndex].FindControl("rblGender") as RadioButtonList;
+    //    // TextBox price = GridView1.Rows[e.RowIndex].FindControl("TextBox4") as TextBox;
+    //    // decimal prc = Convert.ToDecimal(price.Text);
+
+    //    // FileUpload frontFileUpload = GridView1.Rows[e.RowIndex].FindControl("FileUpload1") as FileUpload;
+    //    // FileUpload backFileUpload = GridView1.Rows[e.RowIndex].FindControl("FileUpload2") as FileUpload;
+    //    // HiddenField hiddenFieldFront = GridView1.Rows[e.RowIndex].FindControl("HiddenField1") as HiddenField;
+    //    // HiddenField hiddenFieldBack = GridView1.Rows[e.RowIndex].FindControl("HiddenField2") as HiddenField;
+
+    //    // // Initialize filenames with existing values
+    //    // string frontImgFilename = hiddenFieldFront.Value;
+    //    // string backImgFilename = hiddenFieldBack.Value;
+    //    // SqlCommand cmd;
+    //    // if (frontFileUpload.HasFile)
+    //    // {
+    //    //     frontImgFilename = frontFileUpload.FileName; 
+
+    //    //     cmd = new SqlCommand("UPDATE products SET P_name=@name, Brand_name=@brand, Gender=@gender, Price=@price, Front_img=@frontImg WHERE Pid=@id", cn);
+    //    //     cmd.Parameters.AddWithValue("@name", pnm.Text);
+    //    //     cmd.Parameters.AddWithValue("@brand", brandlist.SelectedValue); // Assuming the DropDownList value represents the brand
+    //    //     cmd.Parameters.AddWithValue("@gender", genlist.SelectedValue);
+    //    //     cmd.Parameters.AddWithValue("@price", prc);
+    //    //     cmd.Parameters.AddWithValue("@frontImg", frontFileUpload.FileName);
+
+    //    //     cmd.Parameters.AddWithValue("@id", pid);
+    //    //     frontFileUpload.SaveAs(Server.MapPath("assets\\upload") + "\\" + frontFileUpload.FileName);
+    //    //     cn.Open();
+    //    //     cmd.ExecuteNonQuery();
+    //    //     cn.Close();
+    //    // }
+
+    //    // else if(backFileUpload.HasFile)
+    //    // {
+    //    //     backImgFilename = backFileUpload.FileName;
+    //    //     cmd = new SqlCommand("UPDATE products SET P_name=@name, Brand_name=@brand, Gender=@gender, Price=@price, Back_img=@backImg WHERE Pid=@id", cn);
+    //    //     cmd.Parameters.AddWithValue("@name", pnm.Text);
+    //    //     cmd.Parameters.AddWithValue("@brand", brandlist.SelectedValue); // Assuming the DropDownList value represents the brand
+    //    //     cmd.Parameters.AddWithValue("@gender", genlist.SelectedValue);
+    //    //     cmd.Parameters.AddWithValue("@price", prc);
+
+    //    //     cmd.Parameters.AddWithValue("@backImg", backFileUpload.FileName);
+    //    //     cmd.Parameters.AddWithValue("@id", pid);
+
+    //    //     backFileUpload.SaveAs(Server.MapPath("assets\\upload") + "\\" + backFileUpload.FileName);
+    //    //     cn.Open();
+    //    //     cmd.ExecuteNonQuery();
+    //    //     cn.Close();
+    //    // }
+    //    // else
+    //    // {
+    //    //     cmd = new SqlCommand("UPDATE products SET P_name=@name, Brand_name=@brand, Gender=@gender, Price=@price WHERE Pid=@id", cn);
+    //    //     cmd.Parameters.AddWithValue("@name", pnm.Text);
+    //    //     cmd.Parameters.AddWithValue("@brand", brandlist.SelectedValue); // Assuming the DropDownList value represents the brand
+    //    //     cmd.Parameters.AddWithValue("@gender", genlist.SelectedValue);
+    //    //     cmd.Parameters.AddWithValue("@price", prc);
+    //    //     cmd.Parameters.AddWithValue("@id", pid);
+    //    //     cn.Open();
+    //    //     cmd.ExecuteNonQuery();
+    //    //     cn.Close();
+
+    //    // }
+
+
+
+
+
+    //    // GridView1.EditIndex = -1;
+    //    //GridView1.DataBind(); 
+
+
+    //int pid = Convert.ToInt16(GridView1.DataKeys[e.RowIndex].Values["Pid"].ToString());
+    //TextBox pnm = GridView1.Rows[e.RowIndex].FindControl("TextBox1") as TextBox;
+    //DropDownList brandlist = GridView1.Rows[e.RowIndex].FindControl("DropDownList1") as DropDownList;
+    //RadioButtonList genlist = GridView1.Rows[e.RowIndex].FindControl("rblGender") as RadioButtonList;
+    //TextBox price = GridView1.Rows[e.RowIndex].FindControl("TextBox4") as TextBox;
+    //decimal prc = Convert.ToDecimal(price.Text);
+
+    //FileUpload frontFileUpload = GridView1.Rows[e.RowIndex].FindControl("FileUpload1") as FileUpload;
+    //FileUpload backFileUpload = GridView1.Rows[e.RowIndex].FindControl("FileUpload2") as FileUpload;
+    //HiddenField hiddenFieldFront = GridView1.Rows[e.RowIndex].FindControl("HiddenField1") as HiddenField;
+    //HiddenField hiddenFieldBack = GridView1.Rows[e.RowIndex].FindControl("HiddenField2") as HiddenField;
+
+    //    //    //Initialize filenames with existing values
+    //    //    string frontImgFilename = hiddenFieldFront.Value;
+    //    //    string backImgFilename = hiddenFieldBack.Value;
+
+    //    //    SqlCommand cmd;
+    //    //    if (frontFileUpload.HasFile && backFileUpload.HasFile)
+    //    //    {
+    //    //        frontImgFilename = frontFileUpload.FileName;
+    //    //        backImgFilename = backFileUpload.FileName;
+    //    //        qry = "update products set P_name='" + pnm.Text + "',Brand_name='" + brandlist.SelectedValue + "',Gender='" + genlist.SelectedValue + "',Price=" + prc + ",Front_img='" + frontFileUpload.FileName + "',Back_img='" + backFileUpload.FileName + "' where Pid=" +pid;
+
+
+    //    //        //cmd = new SqlCommand("UPDATE All_Products SET P_name=@name, Brand=@brand, Gender=@gender, Price=@price, Front_img=@frontImg, Back_img=@backImg WHERE Pid=@id", cn);
+    //    //        //cmd.Parameters.AddWithValue("@name", pnm.Text);
+    //    //        //cmd.Parameters.AddWithValue("@brand", brandlist.SelectedValue); // Assuming the DropDownList value represents the brand
+    //    //        //cmd.Parameters.AddWithValue("@gender", genlist.SelectedValue);
+    //    //        //cmd.Parameters.AddWithValue("@price", prc);
+    //    //        //cmd.Parameters.AddWithValue("@frontImg", frontFileUpload.FileName);
+    //    //        //cmd.Parameters.AddWithValue("@backImg", backFileUpload.FileName);
+    //    //        //cmd.Parameters.AddWithValue("@id", pid);
+    //    //        frontFileUpload.SaveAs(Server.MapPath("assets\\upload") + "\\" + frontFileUpload.FileName);
+    //    //        backFileUpload.SaveAs(Server.MapPath("assets\\upload") + "\\" + backFileUpload.FileName);
+
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        qry = "update products set P_name='" + pnm.Text + "',Brand='" + brandlist.SelectedValue + "',Gender='" + genlist.SelectedValue + "',Price=" + prc + ",Front_img='" + frontFileUpload.FileName + "',Back_img='" + backFileUpload.FileName + "' where Pid=" + pid;
+
+
+
+    //    //    }
+    //    //     cmd = new SqlCommand(qry, cn);
+    //    //    cn.Open();
+    //    //    int result = cmd.ExecuteNonQuery();
+    //    //    if (result > 0)
+    //    //    {
+
+    //    //        Response.Write("<script>alert('success')</script>");
+    //    //     //   Response.Redirect("Default.aspx");
+    //    //        GridView1.EditIndex = -1;
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        Response.Write("<script>alert('failed')</script>");
+
+    //    //    }
+    //    //    GridView1.DataBind();
+    //    //    test.Text = qry;
+    //    //    cn.Close();
+    //    //}
+    //    int pid = Convert.ToInt16(GridView1.DataKeys[e.RowIndex].Values["Pid"].ToString());
+    //    TextBox pnm = GridView1.Rows[e.RowIndex].FindControl("TextBox1") as TextBox;
+    //    DropDownList brandlist = GridView1.Rows[e.RowIndex].FindControl("DropDownList1") as DropDownList;
+    //    RadioButtonList genlist = GridView1.Rows[e.RowIndex].FindControl("rblGender") as RadioButtonList;
+    //    TextBox price = GridView1.Rows[e.RowIndex].FindControl("TextBox4") as TextBox;
+    //    decimal prc = Convert.ToDecimal(price.Text);
+
+    //    FileUpload frontFileUpload = GridView1.Rows[e.RowIndex].FindControl("FileUpload1") as FileUpload;
+    //    FileUpload backFileUpload = GridView1.Rows[e.RowIndex].FindControl("FileUpload2") as FileUpload;
+    //    HiddenField hiddenFieldFront = GridView1.Rows[e.RowIndex].FindControl("HiddenField1") as HiddenField;
+    //    HiddenField hiddenFieldBack = GridView1.Rows[e.RowIndex].FindControl("HiddenField2") as HiddenField;
+
+    //    //Initialize filenames with existing values
+    //    string frontImgFilename = hiddenFieldFront.Value;
+    //    string backImgFilename = hiddenFieldBack.Value;
+
+    //    SqlCommand cmd;
+    //    if (frontFileUpload.HasFile && backFileUpload.HasFile)
+    //    {
+    //        frontImgFilename = frontFileUpload.FileName;
+    //        backImgFilename = backFileUpload.FileName;
+    //       // qry = "update products set P_name='" + pnm.Text + "',Brand_name='" + brandlist.SelectedValue + "',Gender='" + genlist.SelectedValue + "',Price=" + prc + ",Front_img='" + frontFileUpload.FileName + "',Back_img='" + backFileUpload.FileName + "' where Pid=" + pid;
+
+
+    //        cmd = new SqlCommand("UPDATE products SET P_name=@name, Brand_name=@brand, Gender=@gender, Price=@price, Front_img=@frontImg, Back_img=@backImg WHERE Pid=@id", cn);
+    //        cmd.Parameters.AddWithValue("@name", pnm.Text);
+    //        cmd.Parameters.AddWithValue("@brand", brandlist.SelectedValue); // Assuming the DropDownList value represents the brand
+    //        cmd.Parameters.AddWithValue("@gender", genlist.SelectedValue);
+    //        cmd.Parameters.AddWithValue("@price", prc);
+    //        cmd.Parameters.AddWithValue("@frontImg", frontFileUpload.FileName);
+    //        cmd.Parameters.AddWithValue("@backImg", backFileUpload.FileName);
+    //        cmd.Parameters.AddWithValue("@id", pid);
+    //        frontFileUpload.SaveAs(Server.MapPath("assets\\upload") + "\\" + frontFileUpload.FileName);
+    //        backFileUpload.SaveAs(Server.MapPath("assets\\upload") + "\\" + backFileUpload.FileName);
+    //        cn.Open();
+    //        cmd.ExecuteNonQuery();
+
+    //        cn.Close();
+    //    }
+    //    else
+    //    {
+    //        cmd = new SqlCommand("UPDATE products SET P_name=@name, Brand_name=@brand, Gender=@gender, Price=@price, Front_img=@frontImg, Back_img=@backImg WHERE Pid=@id", cn);
+    //        cmd.Parameters.AddWithValue("@name", pnm.Text);
+    //        cmd.Parameters.AddWithValue("@brand", brandlist.SelectedValue); // Assuming the DropDownList value represents the brand
+    //        cmd.Parameters.AddWithValue("@gender", genlist.SelectedValue);
+    //        cmd.Parameters.AddWithValue("@price", prc);
+
+    //        cmd.Parameters.AddWithValue("@id", pid);
+    //        cn.Open();
+    //        cmd.ExecuteNonQuery();
+
+    //        cn.Close();
+    //    }
+
+    //    GridView1.DataBind();
+    //    test.Text = qry;
+    //    cn.Close();
+    //}
+
+    protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+ 
+
+        //int pid = Convert.ToInt16(GridView1.DataKeys[e.RowIndex].Values["Pid"].ToString());
+        //TextBox pnm = GridView1.Rows[e.RowIndex].FindControl("TextBox1") as TextBox;
+        //DropDownList brandlist = GridView1.Rows[e.RowIndex].FindControl("DropDownList1") as DropDownList;
+        //RadioButtonList genlist = GridView1.Rows[e.RowIndex].FindControl("rblGender") as RadioButtonList;
+        //TextBox price = GridView1.Rows[e.RowIndex].FindControl("TextBox4") as TextBox;
+        //decimal prc = Convert.ToDecimal(price.Text);
+        //Response.Write("<script>alert('bhi..')</script>");
+
+        //FileUpload frontFileUpload = GridView1.Rows[e.RowIndex].FindControl("FileUpload1") as FileUpload;
+        //Response.Write("<script>alert('hi..')</script>");
+
+        ////Response.Write("<script>alert('" + frontFileUpload.FileName + "')</script>");
+
+        //FileUpload backFileUpload = GridView1.Rows[e.RowIndex].FindControl("FileUpload2") as FileUpload;
+        ////Response.Write("<script>alert('" + backFileUpload.FileName + "')</script>");
+
+        ////HiddenField hiddenFieldFront = GridView1.Rows[e.RowIndex].FindControl("HiddenField1") as HiddenField;
+        ////HiddenField hiddenFieldBack = GridView1.Rows[e.RowIndex].FindControl("HiddenField2") as HiddenField;
+
+        //if (5==5)
+        //{
+
+
+
+        //    qry = "update products set Front_img='05.jpg' where Pid=" + pid;
+
+        //    test.Text = qry;
+
+        //    //qry = "update products set P_name='" + pnm.Text + "',Brand_name='" + brandlist.SelectedValue + "',Gender='" + genlist.SelectedValue + "',Price=" + prc + ",Front_img='" + ffn + "',Back_img='" + ffn + "' where Pid=" + pid;
+
+
+
+
+        //    //frontFileUpload.SaveAs(Server.MapPath("assets\\upload") + "\\" + "05.jpg")
+        //    //;
+        //    //backFileUpload.SaveAs(Server.MapPath("assets\\upload") + "\\" + backFileUpload.FileName);
+        //    //  Response.Write("<script>alert('"+qry+"')</script>");
+        //}
+        ////else
+        ////{
+        ////  //  qry = "update products set P_name='" + pnm.Text + "',Brand_name='" + brandlist.SelectedValue + "',Gender='" + genlist.SelectedValue + "',Price=" + prc + " where Pid=" + pid;
+
+
+        ////}
+        //string qqqq = "UPDATE products SET Front_img='18.jpg' WHERE Pid=1";
+        //cn.Open();
+        //SqlCommand cmd = new SqlCommand("UPDATE products SET Front_img='8.jpg' WHERE Pid=1", cn);
+
+
+
+        //int result = cmd.ExecuteNonQuery();
+        //cn.Close();
+        ////if (result > 0)
+        ////{
+
+        ////    Response.Write("updated");
+        ////    GridView1.EditIndex = -1;
+
+        ////    test.Text = qry;
+        ////}
+        ////else
+        ////{
+        ////    Response.Write("failed</script>");
+
+        ////}
+        //GridView1.DataBind();
+        //cn.Close();
+
+
+
+    }
+
+    protected void GridView1_RowUpdated(object sender, GridViewUpdatedEventArgs e)
+    {
+        Response.Write("<script>alert('hsdffi..')</script>");
+
+    }
+}
