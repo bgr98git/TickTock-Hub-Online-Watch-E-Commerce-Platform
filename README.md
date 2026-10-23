@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/33866815/README.md)
+
 # ⌚ TickTock Hub – Online Watch E-Commerce Platform
 
 TickTock Hub is a web-based e-commerce platform for watch enthusiasts and shoppers. Customers can explore a wide range of watches, from luxury timepieces to modern smartwatches, add them to a cart, and place orders online. An admin panel lets the store owner manage users, brands, products, orders and feedback.
